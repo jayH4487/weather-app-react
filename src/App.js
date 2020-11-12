@@ -1,9 +1,11 @@
 import React from "react"
 
+import { SearchContainer } from "./containers/search"
+
 function App() {
   return (
     <div>
-        This is a weather app
+        <SearchContainer></SearchContainer>
     </div>
   )
 }
