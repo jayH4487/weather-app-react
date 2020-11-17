@@ -1,29 +1,10 @@
-import React, { useState } from "react"
+import React from "react"
 
 import Search from "../components/search"
 
-export function SearchContainer() {
-
-    const [city, setCity] = useState("")
-    const [weather, setWeather] = useState(null)
+export function SearchContainer({ city, setCity, handleSubmit }) {
 
     const isInputInValid = city === ""
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        (async () => {
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_API_KEY}`
-            try {
-                const response = await fetch(url)
-                const data = await response.json()
-                setWeather(data)
-                console.log(data)
-            } catch (error) {
-                console.error(error)
-            }
-        })()
-    }
 
     return (
         <Search>
