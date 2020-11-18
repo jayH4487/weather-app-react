@@ -1,20 +1,22 @@
-import React from "react"
+import React, { useState } from "react"
 
 import Search from "../components/search"
 
-export function SearchContainer({ city, setCity, handleSubmit }) {
+export function SearchContainer({ handleSubmit }) {
 
-    const isInputInValid = city === ""
+    const [searchInput, setSearchInput] = useState("")
+
+    const isInputInValid = searchInput === ""
 
     return (
         <Search>
-            <Search.Form onSubmit={handleSubmit} method="POST">
+            <Search.Form onSubmit={(event) => handleSubmit(event, searchInput)} method="POST">
                 <Search.Input
                     placeholder="Enter city"
                     type="text"
                     name="city"
-                    value={city}
-                    onChange={({ target }) => setCity(target.value)}
+                    value={searchInput}
+                    onChange={({ target }) => setSearchInput(target.value)}
                 />
                 <Search.Button
                     disabled={isInputInValid}
