@@ -11,6 +11,7 @@ function App() {
         {header: "Header 1", body: "body 1"},
         {header: "Header 2", body: "body 2"}
     ])
+    const [dailyForecast, setDailyForecast] = useState(null)
 
     const handleSubmit = (event, searchInput) => {
         event.preventDefault()
@@ -21,11 +22,11 @@ function App() {
         
     //     city !== "" &&
     //     (async () => {
-    //         const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.REACT_APP_API_KEY}`
+    //         const url = `https://api.openweathermap.org/data/2.5/onecall?lat=51.51&lon=-0.13&exclude=minutely,hourly&appid=${process.env.REACT_APP_API_KEY}`
     //         try {
     //             const response = await fetch(url)
     //             const data = await response.json()
-    //             setWeather(data)
+    //             setDailyForecast(data.daily)
     //         } catch (error) {
     //             console.error(error)
     //         }
@@ -33,11 +34,11 @@ function App() {
         
     // }, [city])
 
-    console.log(weather)
+    console.log(dailyForecast)
     return (
         <div>
             <SearchContainer handleSubmit={handleSubmit}></SearchContainer>
-            <WeatherContainer weather={weather}></WeatherContainer>
+            <WeatherContainer lat={51.51} lon={0.00}></WeatherContainer>
         </div>
     )
 }
