@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext } from "react"
 
-import { Container, Item, Header, Body } from "./styles/accordion"
+import { Container, Item, Header, Body, Wrapper, Text, Image } from "./styles/accordion"
 
 export default function Accordion({ children, ...restProps }) {
     return (
@@ -41,5 +41,24 @@ Accordion.Body = function AccordionBody({ children, ...restProps }) {
 
     return (
         isActive ? <Body {...restProps}>{children}</Body> : null
+    )
+}
+
+Accordion.Wrapper = function AccordionWrapper({ children, ...restProps }) {
+    return (
+        <Wrapper {...restProps}>{children}</Wrapper>
+    )
+}
+
+Accordion.Text = function AccordionText({ children, ...restProps }) {
+    return (
+        <Text {...restProps}>{children}</Text>
+    )
+}
+
+Accordion.Image = function AccordionImage({ alt, src, ...restProps }) {
+    console.log(alt, src)
+    return (
+        <Image {...restProps} src={src} alt={alt} />
     )
 }

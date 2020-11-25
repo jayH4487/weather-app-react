@@ -18,26 +18,19 @@ function useFetchDailyWeather(lat, lon) {
                 const data = await response.json()
                 setDailyForecast(data.daily)
 
-                const modForecast = data.daily.map(day => {
+                const modForecast = data.daily.map((day, i) => {
                     const date = new Date(day.dt * 1000)
-                    const dayOfWeek = date
-                    const dayOfMonth = date
-                    const month = date
-                    const description = day.weather.description
-                    const icon = day.weather.icon
-                    const maxTemp = day.temp.max
-                    const minTemp = day.temp.min
+                    const dayOfWeek = date.toLocaleDateString("en-GB", {weekday: "long"})
+                    const dayOfMonth = date.getDate()
+                    const month = date.toLocaleDateString("en-GB", {month: "short"})
 
                     return {
                         dt: day.dt,
-                        dayOfWeek: date.toLocaleDateString("en-GB", {weekday: "long"}),
-                        dayOfMonth: date.getDate(),
-                        month: date.toLocaleDateString("en-GB", {month: "short"}),
-                        description: day.weather[0].description,
+                        dateString: i === 0 ? "Today" : `${dayOfWeek}, ${dayOfMonth} ${month}`,
+                        description: (description => description[0].toUpperCase() + description.slice(1))(day.weather[0].description),
                         icon: day.weather[0].icon,
                         maxTemp: kelvinToCelsius(day.temp.max),
                         minTemp: kelvinToCelsius(day.temp.min)
-
                     }
                 })
 
@@ -62,26 +55,28 @@ export function WeatherContainer({ lat, lon }) {
 
     return (
         <Accordion>
-                {dailyWeather.map(day => (
-                    <Accordion.Item key={day.dt}>
+                {dailyWeather.map(({
+                    dt,
+                    dateString,
+                    description,
+                    icon,
+                    maxTemp,
+                    minTemp
+                }) => (
+                    <Accordion.Item key={dt}>
                         <Accordion.Header>
-                            <p>
-                                {day.dayOfWeek}, {day.dayOfMonth} {day.month}
-                            </p>
-                            <p>
-                                {day.description}
-                            </p>
-                            <p>
-                                {day.icon}
-                            </p>
-                            <p>
-                                {day.maxTemp}{"\xB0"}
-                            </p>
-                            <p>
-                                {day.minTemp}{"\xB0"}
-                            </p>
+                            <Accordion.Wrapper>
+                                <Accordion.Text>{dateString}</Accordion.Text>
+                                <Accordion.Text>{description}</Accordion.Text>
+                            </Accordion.Wrapper>
+                            <Accordion.Image src={`https://openweathermap.org/img/w/${icon}.png`} alt={description} />
+                            <Accordion.Wrapper>
+                                <Accordion.Text>{maxTemp}{"\xB0"}</Accordion.Text>
+                                <Accordion.Text>{minTemp}{"\xB0"}</Accordion.Text>
+                            </Accordion.Wrapper>
                         </Accordion.Header>
                         <Accordion.Body>This is the weather body</Accordion.Body>
+                        <hr></hr>
                     </Accordion.Item>
                 ))}
         </Accordion>
