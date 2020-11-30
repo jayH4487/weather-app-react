@@ -40,7 +40,7 @@ function useFetchDailyForecast(lat, lon) {
             }
         })()
         
-    }, [])
+    }, [lat, lon])
 
     return dailyForecast
 
@@ -49,7 +49,7 @@ function useFetchDailyForecast(lat, lon) {
 
 export function WeatherContainer({ lat, lon }) {
 
-    const dailyForecast = useFetchDailyForecast(lat, lon)
+    const dailyForecast = useFetchDailyForecast(lat, lon) || []
 
     return (
         <Accordion>

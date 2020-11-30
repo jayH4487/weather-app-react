@@ -57,7 +57,6 @@ Accordion.Text = function AccordionText({ children, ...restProps }) {
 }
 
 Accordion.Image = function AccordionImage({ alt, src, ...restProps }) {
-    console.log(alt, src)
     return (
         <Image {...restProps} src={src} alt={alt} />
     )

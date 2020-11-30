@@ -7,38 +7,43 @@ import { WeatherContainer } from "./containers/weather"
 function App() {
 
     const [city, setCity] = useState("")
-    const [weather, setWeather] = useState([
-        {header: "Header 1", body: "body 1"},
-        {header: "Header 2", body: "body 2"}
-    ])
-    const [dailyForecast, setDailyForecast] = useState(null)
+    const [coordinates, setCoordinates] = useState({})
+    const [error, setError] = useState(true)
 
     const handleSubmit = (event, searchInput) => {
         event.preventDefault()
         setCity(searchInput)
     }
 
-    // useEffect(() => {
+    useEffect(() => {
         
-    //     city !== "" &&
-    //     (async () => {
-    //         const url = `https://api.openweathermap.org/data/2.5/onecall?lat=51.51&lon=-0.13&exclude=minutely,hourly&appid=${process.env.REACT_APP_API_KEY}`
-    //         try {
-    //             const response = await fetch(url)
-    //             const data = await response.json()
-    //             setDailyForecast(data.daily)
-    //         } catch (error) {
-    //             console.error(error)
-    //         }
-    //     })()
+        city !== "" &&
+        (async () => {
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_API_KEY}`
+            try {
+                const response = await fetch(url)
+                if (response.status === 200) {
+                    const data = await response.json()
+                    setCoordinates(data.coord)
+                    setError(false)
+                } else {
+                    setError(true)
+                }
+            } catch (error) {
+                console.error(error)
+                setError(true)
+            }
+        })()
         
-    // }, [city])
+    }, [city])
 
-    console.log(dailyForecast)
+    // console.log(coordinates.lat)
     return (
         <div>
             <SearchContainer handleSubmit={handleSubmit}></SearchContainer>
-            <WeatherContainer lat={51.51} lon={0.00}></WeatherContainer>
+            {!error
+                ? <WeatherContainer lat={coordinates.lat} lon={coordinates.lon}></WeatherContainer>
+                : null}
         </div>
     )
 }
