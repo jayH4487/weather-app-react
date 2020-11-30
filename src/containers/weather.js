@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react"
 
 import Accordion from "../components/accordion"
 
-function useFetchDailyWeather(lat, lon) {
+function useFetchDailyForecast(lat, lon) {
     
-    const [dailyWeather, setDailyWeather] = useState([])
-    const [dailyForecast, setDailyForecast] = useState(null)
+    const [dailyForecast, setDailyForecast] = useState([])
 
     const kelvinToCelsius = (kelvin) => (kelvin - 273.15).toFixed(0)
 
@@ -16,9 +15,8 @@ function useFetchDailyWeather(lat, lon) {
             try {
                 const response = await fetch(url)
                 const data = await response.json()
-                setDailyForecast(data.daily)
 
-                const modForecast = data.daily.map((day, i) => {
+                const forecast = data.daily.map((day, i) => {
                     const date = new Date(day.dt * 1000)
                     const dayOfWeek = date.toLocaleDateString("en-GB", {weekday: "long"})
                     const dayOfMonth = date.getDate()
@@ -34,7 +32,7 @@ function useFetchDailyWeather(lat, lon) {
                     }
                 })
 
-                setDailyWeather(modForecast)
+                setDailyForecast(forecast)
 
 
             } catch (error) {
@@ -44,18 +42,18 @@ function useFetchDailyWeather(lat, lon) {
         
     }, [])
 
-    return dailyWeather
+    return dailyForecast
 
 }
 
 
 export function WeatherContainer({ lat, lon }) {
 
-    const dailyWeather = useFetchDailyWeather(lat, lon)
+    const dailyForecast = useFetchDailyForecast(lat, lon)
 
     return (
         <Accordion>
-                {dailyWeather.map(({
+                {dailyForecast.map(({
                     dt,
                     dateString,
                     description,
